@@ -88,7 +88,6 @@ class Heap::BinHeap
   # Given an index, return the index with the row that the node sits in
   def row_index(index)
     parent_level = level(index) - 1
-
     index - ((1..parent_level).map { |l| 2**(l - 1) }.reduce(&:+) || 0)
   end
 

@@ -73,7 +73,7 @@ class Heap::BinHeap
 
     # The position of the parent within the tree
     # = number of preceding nodes + index within parent row
-    ((1..parent_level - 1).reduce(&:+) || 0) + parent_row_index
+    ((1..parent_level - 1).map { |l| 2**(l - 1) }.reduce(&:+) || 0) + parent_row_index
   end
 
   # Given an index, return the indices of its children
@@ -81,7 +81,7 @@ class Heap::BinHeap
     return [] if level(index) == Math.log(size, 2).ceil + 1
 
     child_row_indices = [1, 0].map { |n| (2 * row_index(index)) - n }
-    previous = (1..level(index)).reduce(&:+)
+    previous = (1..level(index)).map { |l| 2**(l - 1) }.reduce(&:+)
     child_row_indices.map { |n| previous + n }.select { |n| n <= size }
   end
 
@@ -89,7 +89,7 @@ class Heap::BinHeap
   def row_index(index)
     parent_level = level(index) - 1
 
-    index - ((1..parent_level).reduce(&:+) || 0)
+    index - ((1..parent_level).map { |l| 2**(l - 1) }.reduce(&:+) || 0)
   end
 
   # Given an index, find out which level of the complete tree it sits in
@@ -98,7 +98,7 @@ class Heap::BinHeap
     n     = 0
     until n >= index
       layer += 1
-      n     += layer
+      n     += 2**(layer - 1)
     end
 
     layer

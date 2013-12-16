@@ -25,6 +25,36 @@ describe BinHeap do
       min_heap.size.should == 6 - i
     end
   end
+
+  # Methods concerning tree-index arithmetic:
+  #
+  # Input =       1
+  #            2     3
+  #          4   5 6   7
+  #           8
+  it "knows how to navigate a tree via array indices" do
+    heap = BinHeap.new
+    (1..8).each { |n| heap.push n }
+    heap.send(:level, 1).should == 1
+    heap.send(:level, 2).should == 2
+    heap.send(:level, 4).should == 3
+    heap.send(:level, 8).should == 4
+
+    heap.send(:row_index, 1).should == 1
+    heap.send(:row_index, 3).should == 2
+    heap.send(:row_index, 6).should == 3
+    heap.send(:row_index, 8).should == 1
+
+    heap.send(:parent, 2).should == 1
+    heap.send(:parent, 4).should == 2
+    heap.send(:parent, 6).should == 3
+    heap.send(:parent, 8).should == 4
+
+    heap.send(:children, 1).should == [2, 3]
+    heap.send(:children, 2).should == [4, 5]
+    heap.send(:children, 3).should == [6, 7]
+    heap.send(:children, 4).should == [8]
+  end
 end
 
 describe MinHeap do

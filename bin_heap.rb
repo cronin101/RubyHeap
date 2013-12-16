@@ -1,3 +1,5 @@
+require 'rviz'
+
 module Heap
 end
 
@@ -29,6 +31,21 @@ class Heap::BinHeap
       heapify_down 1
     end
     result
+  end
+
+  def visualize
+    g = Rviz::Graph.new
+    # Add nodes to graph via BFS, starting with root
+    frontier = [1]
+    until frontier.empty?
+      index = frontier.shift
+      unless index == 1          # Connect to parent unless root
+        g.add_edge(@nodeset[parent index].to_s, '', @nodeset[index], '')
+      end
+      frontier.concat(children index)
+    end
+    g.output('bin_heap.dot')
+    `dot -o bin_heap.png -Tpng bin_heap.dot`
   end
 
   private

@@ -55,6 +55,12 @@ describe BinHeap do
     heap.send(:children, 3).should == [6, 7]
     heap.send(:children, 4).should == [8]
   end
+
+  it "knows how to draw the tree as a graph" do
+    heap = BinHeap.new
+    (1..8).each { |n| heap.push n }
+    heap.visualize
+  end
 end
 
 describe MinHeap do

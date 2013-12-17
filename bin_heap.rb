@@ -89,13 +89,11 @@ class Heap::BinHeap
     end
   end
 
-  # Given an index, return the index of its parent
-  def parent(index)
+  def parent(index)   # Index -> Parent Index
     (index / 2).floor
   end
 
-  # Given an index, return the indices of its children
-  def children(index)
+  def children(index) # Index -> Children Index
     return [] if Math.log(index, 2).ceil == Math.log(size, 2).ceil
     [0, 1].map { |n| (2 * index) + n }.select { |n| n <= size }
   end

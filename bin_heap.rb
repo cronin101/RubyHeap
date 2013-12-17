@@ -2,6 +2,11 @@ module Heap
 end
 
 class Heap::BinHeap
+  # Build a heap structure by converting a given array.
+  # @array: The collection of elements to heapify
+  # Usage: Heap::BinHeap.heapify(test_scores)
+  # Returns: Heap::BinHeap instance with @nodeset of heapified input
+  # Complexity: O(n)
   def self.heapify(array, op=:<) # I could write this sensibly but... LOLRUBY
     (self.new op).tap do |h|
       h.instance_eval { @nodeset.concat array }
@@ -9,24 +14,51 @@ class Heap::BinHeap
     end
   end
 
+  # Build an empty heap structure.
+  # Note: If you already have a collection of elements, it is more efficient to heapify
+  #   instead of creating an empty heap and pushing each item consecutively.
+  # @op?: The comparator to use, :< creates a MinHeap and :> creates a MaxHeap.
+  # Usage: Heap::BinHeap.new
+  # Returns: Heap::BinHeap instance with empty @nodeset.
+  # Complexity: O(1)
   def initialize(op=:<)
     @op = op
     @nodeset = [nil]
   end
 
+  # Query the number of elements contained within the heap structure.
+  # Usage: heap.size
+  # Returns: The number of user-inputted heap elements in the @nodeset.
+  # Complexity: O(1)
   def size
     @nodeset.length - 1
   end
 
+  # Query the root of the heap. In a MinHeap this will be the smallest element,
+  #   in a MaxHeap it will be the largest.
+  # Usage: heap.peek
+  # Returns: The root element's value without altering the heap.
+  # Complexity: O(1)
   def peek
     @nodeset[1]
   end
 
+  # Insert a new element into the heap. The heap's properties are maintained.
+  # @node: The element to insert.
+  # Usage: heap.push 6
+  # Returns: The BinHeap instance, TODO: Fix this to indicate duplicity?
+  # Complexity: O(log n)
   def push(node)
     new_index = (@nodeset << node).length - 1
     heapify_up new_index
+    self
   end
 
+  # Retrieve the root element from the heap. The heap's properties are maintained.
+  # Usage: heap.pop
+  # Returns: The retrieved root element. This will be the largest element in a MaxHeap,
+  #   or the smallest element in a MinHeap.
+  # Complexity: O(log n)
   def pop
     peek.tap do |result|
       last = @nodeset.pop
@@ -37,6 +69,11 @@ class Heap::BinHeap
     end
   end
 
+  # Draw a Graphviz plot of the BinHeap. Elements in the heap are represented by nodes,
+  #   and the tree-structure is displayed via edges.
+  # Usage: heap.visualize
+  # Returns: Writes to './bin_heap.dot'. TODO: Fix this to make it nicer.
+  # Complexity: O(n)
   def visualize
     require 'rviz'
     g = Rviz::Graph.new

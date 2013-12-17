@@ -28,14 +28,13 @@ class Heap::BinHeap
   end
 
   def pop
-    result = peek
-    if size == 1
-      @nodeset.pop
-    else # Replace the root of the heap with the last element and heapify-down
-      @nodeset[1] = @nodeset.pop
-      heapify_down 1
+    peek.tap do |result|
+      last = @nodeset.pop
+      unless size.zero? # Replace the root of the heap with the last element and heapify-down
+        @nodeset[1] = last
+        heapify_down 1
+      end
     end
-    result
   end
 
   def visualize

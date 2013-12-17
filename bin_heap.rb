@@ -1,5 +1,3 @@
-require 'rviz'
-
 module Heap
 end
 
@@ -41,6 +39,7 @@ class Heap::BinHeap
   end
 
   def visualize
+    require 'rviz'
     g = Rviz::Graph.new
     frontier = [1] # Add nodes to graph via BFS, starting with root
     until frontier.empty?

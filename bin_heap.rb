@@ -3,7 +3,7 @@ end
 
 class Heap::BinHeap
   def self.heapify(array, op=:<) # I could write this sensibly but... LOLRUBY
-    (BinHeap.new op).tap do |h|
+    (self.new op).tap do |h|
       h.instance_eval { @nodeset.concat array }
       (h.size / 2.0).floor.downto(1) { |i| h.send(:heapify_down, i) }
     end

@@ -4,7 +4,7 @@ module Heap
 end
 
 class Heap::BinHeap
-  def self.heapify(array, op=:<)
+  def self.heapify(array, op=:<) # I could write this sensibly but... LOLRUBY
     (BinHeap.new op).tap do |h|
       h.instance_eval { @nodeset.concat array }
       (h.size / 2.0).floor.downto(1) { |i| h.send(:heapify_down, i) }
@@ -97,7 +97,6 @@ class Heap::BinHeap
     return [] if Math.log(index, 2).ceil == Math.log(size, 2).ceil
     [0, 1].map { |n| (2 * index) + n }.select { |n| n <= size }
   end
-
 end
 
 module Heap

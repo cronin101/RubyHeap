@@ -4,6 +4,13 @@ module Heap
 end
 
 class Heap::BinHeap
+  def self.heapify(array, op=:<)
+    (BinHeap.new op).tap do |h|
+      h.instance_eval { @nodeset.concat array }
+      (h.size / 2.0).floor.downto(1) { |i| h.send(:heapify_down, i) }
+    end
+  end
+
   def initialize(op=:<)
     @op = op
     @nodeset = [nil]
@@ -35,11 +42,10 @@ class Heap::BinHeap
 
   def visualize
     g = Rviz::Graph.new
-    # Add nodes to graph via BFS, starting with root
-    frontier = [1]
+    frontier = [1] # Add nodes to graph via BFS, starting with root
     until frontier.empty?
       index = frontier.shift
-      unless index == 1          # Connect to parent unless root
+      unless index == 1 # Connect to parent unless root
         g.add_edge(@nodeset[parent index].to_s, '', @nodeset[index], '')
       end
       frontier.concat(children index)
@@ -85,40 +91,15 @@ class Heap::BinHeap
 
   # Given an index, return the index of its parent
   def parent(index)
-    parent_level = level(index) - 1
-    parent_row_index = (row_index(index) / 2.0).round
-
-    # The position of the parent within the tree
-    # = number of preceding nodes + index within parent row
-    ((1..parent_level - 1).map { |l| 2**(l - 1) }.reduce(&:+) || 0) + parent_row_index
+    (index / 2).floor
   end
 
   # Given an index, return the indices of its children
   def children(index)
-    return [] if level(index) == Math.log(size, 2).ceil + 1
-
-    child_row_indices = [1, 0].map { |n| (2 * row_index(index)) - n }
-    previous = (1..level(index)).map { |l| 2**(l - 1) }.reduce(&:+)
-    child_row_indices.map { |n| previous + n }.select { |n| n <= size }
+    return [] if Math.log(index, 2).ceil == Math.log(size, 2).ceil
+    [0, 1].map { |n| (2 * index) + n }.select { |n| n <= size }
   end
 
-  # Given an index, return the index with the row that the node sits in
-  def row_index(index)
-    parent_level = level(index) - 1
-    index - ((1..parent_level).map { |l| 2**(l - 1) }.reduce(&:+) || 0)
-  end
-
-  # Given an index, find out which level of the complete tree it sits in
-  def level(index)
-    layer = 0
-    n     = 0
-    until n >= index
-      layer += 1
-      n     += 2**(layer - 1)
-    end
-
-    layer
-  end
 end
 
 module Heap

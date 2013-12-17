@@ -8,6 +8,14 @@ describe BinHeap do
     min_heap.peek.should == nil
   end
 
+  it "can be initialised by heapifying an array" do
+    heap = BinHeap.heapify (1..7).to_a
+    (1..7).each_with_index do |n, i|
+      heap.pop.should == n
+      heap.size.should == 6 - i
+    end
+  end
+
   it "can have elements added via #push" do
     min_heap = BinHeap.new
     7.downto(1).each_with_index do |n, i|
@@ -35,16 +43,6 @@ describe BinHeap do
   it "knows how to navigate a tree via array indices" do
     heap = BinHeap.new
     (1..8).each { |n| heap.push n }
-    heap.send(:level, 1).should == 1
-    heap.send(:level, 2).should == 2
-    heap.send(:level, 4).should == 3
-    heap.send(:level, 8).should == 4
-
-    heap.send(:row_index, 1).should == 1
-    heap.send(:row_index, 3).should == 2
-    heap.send(:row_index, 6).should == 3
-    heap.send(:row_index, 8).should == 1
-
     heap.send(:parent, 2).should == 1
     heap.send(:parent, 4).should == 2
     heap.send(:parent, 6).should == 3

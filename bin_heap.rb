@@ -7,8 +7,8 @@ class Heap::BinHeap
   # Usage: Heap::BinHeap.heapify(test_scores)
   # Returns: Heap::BinHeap instance with @nodeset of heapified input
   # Complexity: O(n)
-  def self.heapify(array, op=:<) # I could write this sensibly but... LOLRUBY
-    (self.new op).tap do |h|
+  def self.heapify(array, op = :<) # I could write this sensibly but... LOLRUBY
+    (new op).tap do |h|
       h.instance_eval { @nodeset.concat array }
       (h.size / 2.0).floor.downto(1) { |i| h.send(:heapify_down, i) }
     end
@@ -21,7 +21,7 @@ class Heap::BinHeap
   # Usage: Heap::BinHeap.new
   # Returns: Heap::BinHeap instance with empty @nodeset.
   # Complexity: O(1)
-  def initialize(op=:<)
+  def initialize(op = :<)
     @op = op
     @nodeset = [nil]
   end
@@ -111,7 +111,7 @@ class Heap::BinHeap
     return if (nodes = children index).empty? # Leaves have no children
 
     pivot = if @op == :<
-      nodes.min_by { |i| @nodeset[i] }
+              nodes.min_by { |i| @nodeset[i] }
     else
       nodes.max_by { |i| @nodeset[i] }
     end
@@ -147,4 +147,3 @@ module Heap
     end
   end
 end
-

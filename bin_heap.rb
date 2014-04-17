@@ -111,7 +111,7 @@ class Heap::BinHeap
     return if (nodes = children index).empty? # Leaves have no children
 
     pivot = if @op == :<
-              nodes.min_by { |i| @nodeset[i] }
+      nodes.min_by { |i| @nodeset[i] }
     else
       nodes.max_by { |i| @nodeset[i] }
     end
